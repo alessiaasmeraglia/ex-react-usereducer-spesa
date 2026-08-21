@@ -1,16 +1,122 @@
-# React + Vite
+# Esercizio React: gestione della spesa con `useReducer`
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Creare un carrello interattivo per visualizzare prodotti, gestire quantità e calcolare il totale.
 
-Currently, two official plugins are available:
+## Informazioni
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Voce | Dettaglio |
+| --- | --- |
+| Repository | `ex-react-usereducer-spesa` |
+| Tecnologie | HTML, CSS, JavaScript, React |
+| Obiettivo | Gestire un carrello con `useReducer` |
 
-## React Compiler
+## Milestone 1 - Lista dei prodotti
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Partire dal seguente array:
 
-## Expanding the ESLint configuration
+```js
+const products = [
+  { name: 'Mela', price: 0.5 },
+  { name: 'Pane', price: 1.2 },
+  { name: 'Latte', price: 1.0 },
+  { name: 'Pasta', price: 0.7 },
+];
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Creare un componente che mostri un elenco leggibile di tutti i prodotti.
+
+Per ogni prodotto visualizzare:
+
+- nome;
+- prezzo.
+
+## Milestone 2 - Aggiungere prodotti al carrello
+
+Aggiungere uno stato locale `addedProducts`, inizialmente uguale a un array vuoto, per rappresentare i prodotti nel carrello.
+
+Per ogni prodotto mostrare un bottone `Aggiungi al carrello`.
+
+Al click, creare la funzione `addToCart` per:
+
+- aggiungere il prodotto al carrello con `quantity = 1` se non è già presente;
+- ignorare l’azione se il prodotto è già presente.
+
+Se `addedProducts` contiene almeno un elemento, mostrare sotto alla lista dei prodotti anche la lista del carrello.
+
+Per ogni prodotto nel carrello mostrare:
+
+- nome;
+- prezzo;
+- quantità.
+
+## Milestone 3 - Modificare il carrello
+
+Al click successivo su `Aggiungi al carrello`, se il prodotto è già presente, usare `updateProductQuantity` per incrementare la proprietà `quantity`.
+
+Per ogni prodotto nel carrello aggiungere un bottone `Rimuovi dal carrello`.
+
+Al click, usare `removeFromCart` per rimuovere il prodotto dal carrello.
+
+Sotto alla lista del carrello mostrare il totale da pagare, calcolato moltiplicando il prezzo per la quantità di ogni prodotto e sommando i risultati.
+
+### Obiettivo
+
+Gestire dinamicamente aggiunta, rimozione, modifica e totale del carrello.
+
+## Bonus 1 - Quantità dinamiche
+
+Sostituire il numero visualizzato di `quantity` con un input di tipo `number`.
+
+Quando l’utente modifica il valore, usare `updateProductQuantity` per aggiornare la quantità del prodotto.
+
+La funzione deve:
+
+- trasformare i numeri decimali in numeri interi;
+- impedire quantità negative o pari a zero;
+- garantire una quantità minima pari a `1`.
+
+### Obiettivo
+
+Consentire all’utente di modificare direttamente e con precisione la quantità dei prodotti nel carrello.
+
+## Bonus 2 - Usare `useReducer`
+
+Sostituire `useState` con `useReducer` per gestire lo stato del carrello.
+
+Inizializzare lo stato con un array vuoto:
+
+```js
+const initialState = [];
+```
+
+Configurare il reducer con le seguenti azioni:
+
+- `ADD_ITEM`: aggiunge un nuovo articolo con `quantity = 1` oppure incrementa la quantità di un articolo già presente;
+- `REMOVE_ITEM`: rimuove un articolo specifico dal carrello;
+- `UPDATE_QUANTITY`: modifica la quantità di un articolo esistente, applicando i controlli sui valori non validi.
+
+Struttura di riferimento:
+
+```js
+function cartReducer(state, action) {
+  switch (action.type) {
+    case 'ADD_ITEM':
+      // Logica per aggiungere un prodotto
+      break;
+    case 'REMOVE_ITEM':
+      // Logica per rimuovere un prodotto
+      break;
+    case 'UPDATE_QUANTITY':
+      // Logica per aggiornare la quantità
+      break;
+    default:
+      return state;
+  }
+}
+```
+
+Usare `useReducer` per inviare le azioni e aggiornare il carrello in modo prevedibile.
+
+### Obiettivo
+
+Migliorare la struttura del codice separando la logica di gestione del carrello dal componente e adottando un approccio più scalabile.
